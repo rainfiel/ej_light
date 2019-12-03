@@ -12,11 +12,12 @@ varying vec4 v_color;
 varying vec4 v_additive;
 uniform sampler2D texture0;
 uniform sampler2D texture1;
+
+uniform float light_range;
+uniform float light_smooth;
 uniform vec3 light_position;
 
 void main() {
-	float lightRange = 0.6;
-	float lightSmooth = 1;
 	vec3 lightColor = vec3(1,1,1);
 	vec4 pixel;
 	vec2 screenSize = vec2(1024, 768);
@@ -27,19 +28,19 @@ void main() {
 	vec3 pixel_coords = vec3(v_position * dim, 1.0);
 
 	float dist = distance(light_position, pixel_coords);
-	if (dist > lightRange) {
+	if (dist > light_range) {
 		gl_FragColor = vec4(0,0,0,0);
 	} else {
 		vec4 normalColor = texture2D(texture1, v_texcoord);
 
-    	float att = clamp((1.0 - dist / lightRange) / lightSmooth, 0.0, 1.0);
+    	float att = clamp((1.0 - dist / light_range) / light_smooth, 0.0, 1.0);
 		pixel = vec4(0.0, 0.0, 0.0, 1.0);
 
 		if (normalColor.a<=0) {
 			if (lightGlow.x < 1.0 && lightGlow.y > 0.0) {
-				pixel.rgb = clamp(lightColor * pow(att, lightSmooth) + pow(smoothstep(lightGlow.x, 1.0, att), lightSmooth) * lightGlow.y, 0.0, 1.0);
+				pixel.rgb = clamp(lightColor * pow(att, light_smooth) + pow(smoothstep(lightGlow.x, 1.0, att), light_smooth) * lightGlow.y, 0.0, 1.0);
 			} else {
-				pixel.rgb = lightColor * pow(att, lightSmooth);
+				pixel.rgb = lightColor * pow(att, light_smooth);
 			}
 		} else {
 			vec3 normal = normalize(vec3(normalColor.r,invert_normal ? 1.0 - normalColor.g : normalColor.g, normalColor.b) * 2.0 - 1.0);
@@ -82,6 +83,14 @@ void main() {
 		{
 			name = "light_position",
 			type = "float3",
+		},
+		{
+			name = "light_range",
+			type = "float",
+		},
+		{
+			name = "light_smooth",
+			type = "float",
 		}
 	},
 	texture={
