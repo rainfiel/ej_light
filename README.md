@@ -2,4 +2,5 @@
 a sample ejoy2dx project for lighting
 
 checkout in ejoy2dx/project
-only build with msvc tested
+
+build with msvc tested only
