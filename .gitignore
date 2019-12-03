@@ -1,0 +1,8 @@
+platform/msvc/obj/
+platform/msvc/lib/Debug/ejoy2dx.lib
+platform/msvc/lib/
+platform/msvc/output/
+platform/msvc/build/ej_light.opensdf
+platform/msvc/build/ej_light.sdf
+platform/msvc/build/ej_light.v11.suo
+platform/msvc/build/ej_light/ej_light.vcxproj.ejoy.nvuser
